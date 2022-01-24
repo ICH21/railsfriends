@@ -1,0 +1,51 @@
+<%if user_signed_in? %>
+  <p>Hello <%= current_user.email %>!</p>
+  <p> you are a [<%= current_user.role %>]
+  <% if current_user.admin? %>
+  There are <%= user.count %> users in the system.
+  <%end%>
+  <p>
+  <br />
+  you have successfully authenticated with your Friend App account.
+  you are now ready to interact with this application.
+  </p>
+  <br/>
+  <h1>Friends List</h1>
+  <br/>
+  <table class="table table-bordered table-striped table-hove">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Twitter</th>
+        <!--<th>User ID</th>-->
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @friends.each do |friend| %>
+        <% if friend.user == current_user %>
+          <tr>
+            <td>
+            <%= link_to friend.first_name + " " + friend.last_name , friend %>
+            </td>
+            <td><%= friend.email %></td>
+            <td><%= friend.phone %></td>
+            <td><%= friend.twitter %></td>
+            <!--<td><%= friend.user_id %></td>-->
+            <td><%= link_to "Delete", friend, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm" %></td>
+          </tr>
+        <%end%>
+    <% end %>
+    <tbody>
+  </table>
+
+  <%= link_to "New friend", new_friend_path, class:"btn btn-secondary" %>
+  <br/>
+  <br/>
+<% else%>
+    <p> you are not signed in.</p>
+    <p><%= link_to "Sign Up", new_user_registration_path, class:"btn btn-secondary" %> | <%= link_to "Login", new_user_session_path, class:"btn btn-secondary" %></p>
+<%end%>
